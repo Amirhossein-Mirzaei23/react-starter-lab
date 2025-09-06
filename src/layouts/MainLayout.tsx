@@ -1,4 +1,5 @@
 import { Outlet } from "react-router-dom";
+import NavigationBar from "../components/navigationBar";
 
 export default function MainLayout() {
   return (
@@ -10,9 +11,7 @@ export default function MainLayout() {
         <Outlet />
       </main>
 
-      <footer className="p-4 bg-gray-800 text-center">
-        Footer
-      </footer>
+        <NavigationBar />
     </div>
   );
 }
