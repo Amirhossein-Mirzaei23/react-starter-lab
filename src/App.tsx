@@ -9,3 +9,6 @@ function App() {
 }
 
 export default App;
+
+// bg-top #ff764c
+// bg-down #e1b85e
