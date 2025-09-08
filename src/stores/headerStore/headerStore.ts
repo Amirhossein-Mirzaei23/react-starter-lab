@@ -1,28 +1,26 @@
 import { create } from "zustand";
-import { NavigationState } from "./headerStore.types";
+import { HeaderState, SidePageTitle } from "./headerStore.types";
 
+export const useHeaderStore = create<HeaderState>((set) => ({
+  avatar: true,
+  title: "",
+  hasSidePageTitle: false,
+  sidePageTitle: { title: "", subTitle: "" },
+  backButton: true,
+  appIcon: false,
 
-export const useHeaderStore = create<NavigationState>((set) => ({
-  visibleSections: {
-    avatar: true,
-    title: 'aa',
-    hasSidePageTitle:false,
-    sidePageTitle:{title:'',subTitle:''},
-    backButton: true,
-    appIcon:false,
-  },
-  toggleSection: (key) =>
-    set((state) => ({
-      visibleSections: {
-        ...state.visibleSections,
-        [key]: !state.visibleSections[key],
-      },
-    })),
-  setSection: (key, value) =>
-    set((state) => ({
-      visibleSections: {
-        ...state.visibleSections,
-        [key]: value,
-      },
-    })),
+  toggleBackButton: () =>
+    set((state) => ({ backButton: !state.backButton })),
+  toggleAvatar: () =>
+    set((state) => ({ avatar: !state.avatar })),
+  toggleAppIcon: () =>
+    set((state) => ({ appIcon: !state.appIcon })),
+  toggleSidePageTitle: () =>
+    set((state) => ({ hasSidePageTitle: !state.hasSidePageTitle })),
+
+  setTitle: (value: string) =>
+    set(() => ({ title: value })),
+
+  setSidePageTitle: (value: SidePageTitle) =>
+    set(() => ({ sidePageTitle: value })),
 }));
