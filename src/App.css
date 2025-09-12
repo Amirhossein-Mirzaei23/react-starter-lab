@@ -3,13 +3,13 @@
 
 @layer base {
   :root {
-    /* --color-primary: #1e3a8a;
-    --color-accent: #fbbf24; */
+
   }
-}
-
-#root {
-  margin: 0 auto;
-  text-align: center;
-
+    *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  html, body, #root {
+    margin: 0;
+    padding: 0;
+  }
 }
