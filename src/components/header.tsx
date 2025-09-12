@@ -19,7 +19,7 @@ function Header() {
     ));
 
     return (
-        <div className=' flex items-center justify-between px-4 flex-row-reverse w-full' >
+        <div className=' flex items-center justify-between px-4 flex-row w-full' >
             {avatar && (
                 <div   >
                     <Avatar.Root className='!border-1 !border-slate-100' >
