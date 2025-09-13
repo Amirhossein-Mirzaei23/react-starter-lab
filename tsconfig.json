@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "composite":true,
+    "composite": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
@@ -15,7 +15,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react", 
+    "jsxImportSource": "react",
 
     "baseUrl": ".",
     "paths": {
