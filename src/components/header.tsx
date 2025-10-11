@@ -3,6 +3,7 @@ import { Avatar, Button } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import { useHeaderStore } from '../stores/headerStore/headerStore';
 import { useShallow } from 'zustand/react/shallow';
+import { useNavigate } from 'react-router-dom';
 
 function Header() {
   const { avatar, title, hasSidePageTitle, sidePageTitle, backButton, appIcon } = useHeaderStore(
@@ -15,6 +16,11 @@ function Header() {
       appIcon: state.appIcon,
     })),
   );
+  const navigate = useNavigate();
+
+  const routerBack = () => {
+    navigate(-1); // -1 goes one step back in history
+  };
 
   return (
     <div className=" flex items-center justify-between px-4 flex-row w-full">
@@ -34,7 +40,7 @@ function Header() {
         </div>
       )}
       {backButton && (
-        <div className="">
+        <div onClick={routerBack} className="">
           <Icon icon="solar:arrow-left-linear" width="24" height="24" />
         </div>
       )}

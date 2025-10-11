@@ -1,4 +1,6 @@
 import { BarSegment, useChart } from '@chakra-ui/charts';
+import { Link } from 'react-router-dom';
+
 function FinancePreviewTable() {
   const chart = useChart({
     sort: { by: 'value', direction: 'desc' },
@@ -10,7 +12,9 @@ function FinancePreviewTable() {
   const handleClickOnSegment: React.MouseEventHandler<HTMLDivElement> = (event) => {
     console.log('calll finanacial detail');
   };
+  
   return (
+    <>
     <div className="grid text-neutral-700" onClick={handleClickOnSegment}>
       <BarSegment.Root chart={chart}>
         <BarSegment.Content>
@@ -21,6 +25,12 @@ function FinancePreviewTable() {
         <BarSegment.Legend showPercent />
       </BarSegment.Root>
     </div>
+    <div>
+      <div className='' >
+        <Link to="/post-list">Post List</Link>
+      </div>
+    </div>
+    </>
   );
 }
 

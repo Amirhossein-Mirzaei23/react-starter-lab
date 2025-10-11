@@ -1,6 +1,7 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
 import MainLayout from '../layouts/MainLayout';
+import { PostList } from '../components/posts-list/posts-list';
 
 const Home = lazy(() => import('../pages/Home'));
 
@@ -17,6 +18,12 @@ const routes: RouteObject[] = [
           <Suspense fallback={<p>Loading...</p>}>
             <Home />
           </Suspense>
+        ),
+      },
+      {
+        path: 'post-list',
+        element: (
+            <PostList />
         ),
       },
       {
