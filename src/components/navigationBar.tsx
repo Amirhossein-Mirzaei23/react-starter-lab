@@ -1,16 +1,63 @@
 import React, { useState } from 'react';
-import { Button } from '@chakra-ui/react';
+import { Button, Field, Input, InputGroup } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
+import { useBottomSheetStore } from '../stores/bottomSheetStore';
 // import transActionsIcon from "@iconify-json/solar/icons/add-circle-bold-duotone"
 // import addCircle from '@iconify-json/solar/icons/add-circle-bold-duotone';
+
+const BottomSheetBodyContent = () => (
+  <div className="grid grid-cols-1 items-center justify-center">
+    <div></div>
+    <div>
+      <Field.Root required>
+        <Field.Label>
+          Amount <Field.RequiredIndicator />
+        </Field.Label>
+         <InputGroup startElement="$" endElement="USD">
+          <Input size="md" placeholder="Enter debt value" mb={4} />
+         </InputGroup>
+        <Field.ErrorText>This field is required</Field.ErrorText>
+      </Field.Root>
+    </div>
+  </div>
+);
+
+
+
+
+
 
 function NavigationBar() {
   const [index, setindex] = useState(0);
 
+// Default footer content
+const DefaultFooterContent = () => (
+  <div className="flex items-center gap-1">
+    <Button variant="outline" onClick={() => setBottomSheet({ isOpen: false })}>
+      Discard
+    </Button>
+    <Button colorScheme="blue">Submit</Button>
+  </div>
+);
+
+const openBottomSheet = () => {
+  setBottomSheet({
+    isOpen: true,
+    title: 'login test',
+    bodyContent:<BottomSheetBodyContent />,
+    footer:<DefaultFooterContent />
+  });
+};
+
+
+const { isOpen, setBottomSheet } = useBottomSheetStore();
   const handleClick =
     (index: number): React.MouseEventHandler<HTMLButtonElement> =>
     (event) => {
       setindex(index);
+      if (index == 3 )  {
+        openBottomSheet()
+      }
     };
 
   return (
