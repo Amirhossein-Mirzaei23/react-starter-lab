@@ -7,12 +7,12 @@ export default function Home() {
   return (
     <div>
       <FinancePreviewTable />
-        <Box p={4}>
+      <Box p={4}>
         <BottomSheet
           triggerButtonText="login"
           title="Custom Content Sheet"
           bodyContent={
-             <Box>
+            <Box>
               <Button colorScheme="green">Done</Button>
             </Box>
           }
