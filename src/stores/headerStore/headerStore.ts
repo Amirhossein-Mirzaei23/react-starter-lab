@@ -4,17 +4,14 @@ import { HeaderState, SidePageTitle } from './headerStore.types';
 export const useHeaderStore = create<HeaderState>((set) => ({
   avatar: true,
   title: '',
-  hasSidePageTitle: false,
-  sidePageTitle: { title: '', subTitle: '' },
-  backButton: true,
+  hasBackground: false,
+  backButton: false,
   appIcon: false,
-
-  toggleBackButton: () => set((state) => ({ backButton: !state.backButton })),
-  toggleAvatar: () => set((state) => ({ avatar: !state.avatar })),
-  toggleAppIcon: () => set((state) => ({ appIcon: !state.appIcon })),
-  toggleSidePageTitle: () => set((state) => ({ hasSidePageTitle: !state.hasSidePageTitle })),
-
+  isSticky: false,
+  toggleBackButton: (value: boolean) => set((state) => ({ backButton: value })),
+  setStickyPostion: (value: boolean) => set((state) => ({ isSticky: value })),
+  hasAvatar: (value: boolean) => set((state) => ({ avatar: value })),
+  sethasBackground: (value: boolean) => set((state) => ({ hasBackground: value })),
+  toggleAppIcon: (value: boolean) => set((state) => ({ appIcon: value })),
   setTitle: (value: string) => set(() => ({ title: value })),
-
-  setSidePageTitle: (value: SidePageTitle) => set(() => ({ sidePageTitle: value })),
 }));

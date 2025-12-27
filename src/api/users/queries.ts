@@ -5,12 +5,11 @@ export function Users() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['users'],
     queryFn: fetchUsers,
-    staleTime: 2 * 60 * 1000  // 2 min
+    staleTime: 2 * 60 * 1000, // 2 min
   });
 
   if (isLoading) return;
   if (error) return error;
 
   return data;
-
 }

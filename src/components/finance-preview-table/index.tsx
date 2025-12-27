@@ -12,24 +12,22 @@ function FinancePreviewTable() {
   const handleClickOnSegment: React.MouseEventHandler<HTMLDivElement> = (event) => {
     console.log('calll finanacial detail');
   };
-  
+
   return (
     <>
-    <div className="grid text-neutral-700" onClick={handleClickOnSegment}>
-      <BarSegment.Root chart={chart}>
-        <BarSegment.Content>
-          <BarSegment.Value />
-          <BarSegment.Bar tooltip />
-          <BarSegment.Label />
-        </BarSegment.Content>
-        <BarSegment.Legend showPercent />
-      </BarSegment.Root>
-    </div>
-    <div>
-      <div className='' >
-        <Link to="/post-list">Post List</Link>
+      <div className="grid text-neutral-700" onClick={handleClickOnSegment}>
+        <BarSegment.Root chart={chart}>
+          <BarSegment.Content>
+            <BarSegment.Value />
+            <BarSegment.Bar tooltip />
+            <BarSegment.Label />
+          </BarSegment.Content>
+          <BarSegment.Legend showPercent />
+        </BarSegment.Root>
       </div>
-    </div>
+      <div>
+        <div className=""></div>
+      </div>
     </>
   );
 }

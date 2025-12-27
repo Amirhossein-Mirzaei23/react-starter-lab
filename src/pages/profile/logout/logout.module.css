@@ -1,0 +1,25 @@
+.illustarion {
+  clip-path: ellipse(95% 44% at 5% 57%);
+  background-color: #b7d1f2;
+  width: 110%;
+  height: 60vh;
+  position: absolute;
+  bottom: 50px;
+  left: -50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeEnter 1s 0ms 1 alternate;
+}
+
+@keyframes fadeEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+    transform: translateX(-200px);
+  }
+  100% {
+    opacity: 100;
+    transform: translateX(0);
+  }
+}

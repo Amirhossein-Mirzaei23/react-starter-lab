@@ -1,0 +1,26 @@
+import { Link } from 'react-router-dom';
+import { useHeaderStore } from '../../stores/headerStore/headerStore';
+import React from 'react';
+import { useNavigationStore } from '../../stores/navigationStore/navigationStore';
+import ProfileMenuList from '../../components/profile/profile-menu/profile-menu';
+import FriendsList from '../../components/friends-container/friends-list';
+export default function FriendshipListPage() {
+  const setTitle = useHeaderStore((state) => state.setTitle);
+  const toggleBackButton = useHeaderStore((s) => s.toggleBackButton);
+  const sethasBackground = useHeaderStore((s) => s.sethasBackground);
+  const setAvatar = useHeaderStore((s) => s.hasAvatar);
+  const showNavBar = useNavigationStore((s) => s.showNav);
+  React.useEffect(() => {
+    setTitle('');
+    toggleBackButton(false);
+    sethasBackground(false);
+    setAvatar(true);
+    showNavBar();
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 gap-8">
+      <FriendsList />
+    </div>
+  );
+}

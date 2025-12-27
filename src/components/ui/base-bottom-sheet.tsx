@@ -1,25 +1,33 @@
 'use client';
 
-import { Button, CloseButton, Drawer, Portal, Input, Text, Box } from '@chakra-ui/react';
+import {
+  Button,
+  CloseButton,
+  Drawer,
+  Portal,
+  Input,
+  Text,
+  Box,
+  ConditionalValue,
+} from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { useBottomSheetStore } from '../../stores/bottomSheetStore';
 
 interface BottomSheetProps {
-  triggerButtonText?: string; // Text for the trigger button
-  title?: string; // Default title for the bottom sheet
-  bodyContent?: ReactNode; // Custom body content
-  footer?: ReactNode; // Custom footer content
-  triggerButtonProps?: any; // Additional props for the trigger button
+  triggerButtonText?: string;
+  title?: string;
+  bodyContent?: ReactNode;
+  footer?: ReactNode;
+  BottomSheetContent?: ReactNode;
+  triggerButtonProps?: any;
+  size?: ConditionalValue<'sm' | 'md' | 'lg' | 'xl' | 'xs' | 'full' | undefined>;
+  isOpen: boolean;
 }
 
-const BottomSheet = ({
-  triggerButtonText = 'Open Bottom Sheet',
-  title = 'Bottom Sheet',
-  bodyContent,
-  footer,
-  triggerButtonProps,
-}: BottomSheetProps) => {
-  const { isOpen, setBottomSheet } = useBottomSheetStore();
+const BottomSheet = () => {
+  const { isOpen, title, bodyContent, footer, BottomSheetContent, size, setBottomSheet } =
+    useBottomSheetStore();
+
   const DefaultBodyContent = () => (
     <Box>
       <Text>This is a custom component rendered in the bottom sheet!</Text>
@@ -28,27 +36,35 @@ const BottomSheet = ({
   const DefaultFooterContent = () => (
     <Box>
       <Button variant="outline" mr={2} onClick={() => setBottomSheet({ isOpen: false })}>
-        Discard
+        انصراف
       </Button>
-      <Button colorScheme="blue">Submit</Button>
+      <Button colorScheme="blue">ثبت</Button>
     </Box>
   );
-
   return (
     <Drawer.Root
       open={isOpen}
       onOpenChange={(e) => setBottomSheet({ isOpen: e.open })}
       placement="bottom"
+      size={size}
     >
       <Portal>
         <Drawer.Backdrop />
         <Drawer.Positioner>
-          <Drawer.Content bg="gray.800" color="white">
+          <Drawer.Content className="!bg-slate-700" colorPalette={'gray'} color="white">
             <Drawer.Header>
               <Drawer.Title>{title}</Drawer.Title>
             </Drawer.Header>
-            <Drawer.Body>{bodyContent || <DefaultBodyContent />}</Drawer.Body>
-            <Drawer.Footer>{footer || <DefaultFooterContent />}</Drawer.Footer>
+            <div></div>
+            {BottomSheetContent ? (
+              <>{BottomSheetContent}</>
+            ) : (
+              <>
+                <Drawer.Body>{bodyContent || BottomSheetContent}</Drawer.Body>
+                <Drawer.Footer>{footer || <DefaultFooterContent />}</Drawer.Footer>
+              </>
+            )}
+
             <Drawer.CloseTrigger asChild>
               <CloseButton size="sm" onClick={() => setBottomSheet({ isOpen: false })} />
             </Drawer.CloseTrigger>
@@ -58,5 +74,4 @@ const BottomSheet = ({
     </Drawer.Root>
   );
 };
-
 export default BottomSheet;

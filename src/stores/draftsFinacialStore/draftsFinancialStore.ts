@@ -22,8 +22,6 @@ const useDraftsFinancialStore = create<draftState>((set) => ({
 
 export default useDraftsFinancialStore;
 
-
-
 //  const useStore = create(
 //   persist(
 //     (set) => ({
@@ -36,7 +34,6 @@ export default useDraftsFinancialStore;
 //   )
 // );
 
-
 // const useStore = create((set) => ({
 //   data: null,
 //   loading: false,
@@ -47,5 +44,3 @@ export default useDraftsFinancialStore;
 //     set({ data, loading: false });
 //   },
 // }));
-
-

@@ -1,29 +1,30 @@
-import { Box, Button, HStack } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
-import NavigationBar from '../components/navigationBar';
 import FinancePreviewTable from '../components/finance-preview-table';
-import BottomSheet from '../components/ui/base-bottom-sheet';
+import PenddingBillsContainer from '../components/pendding-bills/Pendding-bills-container';
+import FriendsListContainer from '../components/friends-container/friends-list-container';
+import { useHeaderStore } from '../stores/headerStore/headerStore';
+import React from 'react';
+import { useNavigationStore } from '../stores/navigationStore/navigationStore';
 export default function Home() {
+  const setTitle = useHeaderStore((state) => state.setTitle);
+  const toggleBackButton = useHeaderStore((s) => s.toggleBackButton);
+  const sethasBackground = useHeaderStore((s) => s.sethasBackground);
+  const setAvatar = useHeaderStore((s) => s.hasAvatar);
+  const showNavBar = useNavigationStore((s) => s.showNav);
+  const setStickyPostion = useHeaderStore((s) => s.setStickyPostion);
+  React.useEffect(() => {
+    setTitle('');
+    toggleBackButton(false);
+    sethasBackground(false);
+    setStickyPostion(false);
+    setAvatar(true);
+    showNavBar();
+  }, []);
+
   return (
-    <div>
+    <div className="grid grid-cols-1 gap-8 !pb-6">
       <FinancePreviewTable />
-      <Box p={4}>
-        <BottomSheet
-          triggerButtonText="login"
-          title="Custom Content Sheet"
-          bodyContent={
-            <Box>
-              <Button colorScheme="green">Done</Button>
-            </Box>
-          }
-          footer={
-            <Box>
-              <Button colorScheme="green">Done</Button>
-            </Box>
-          }
-          triggerButtonProps={{ size: 'lg' }}
-        />
-      </Box>
+      <PenddingBillsContainer />
+      <FriendsListContainer />
     </div>
   );
 }

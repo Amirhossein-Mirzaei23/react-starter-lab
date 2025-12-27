@@ -10,15 +10,9 @@ export function usePosts() {
     refetchOnWindowFocus: false,
     refetchOnReconnect: false,
     retry: 3,
-    retryDelay: (attemptIndex) =>  attemptIndex * 400,
+    retryDelay: (attemptIndex) => attemptIndex * 400,
   });
 }
-
-
-
-
-
-
 
 // const { data, isLoading, error } = useQuery({
 //   queryKey: ['posts', userId],

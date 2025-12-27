@@ -1,18 +1,16 @@
 export interface HeaderState {
   avatar: boolean;
   title: string;
-  hasSidePageTitle: boolean;
-  sidePageTitle: SidePageTitle;
   backButton: boolean;
+  hasBackground: boolean;
   appIcon: boolean;
-
-  toggleBackButton: () => void;
-  toggleAvatar: () => void;
-  toggleAppIcon: () => void;
-  toggleSidePageTitle: () => void;
-
+  isSticky: boolean;
+  toggleBackButton: (value: boolean) => void;
+  hasAvatar: (value: boolean) => void;
+  setStickyPostion: (value: boolean) => void;
+  sethasBackground: (value: boolean) => void;
+  toggleAppIcon: (value: boolean) => void;
   setTitle: (value: string) => void;
-  setSidePageTitle: (value: SidePageTitle) => void;
 }
 
 export interface SidePageTitle {
