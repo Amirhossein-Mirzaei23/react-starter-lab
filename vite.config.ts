@@ -13,7 +13,8 @@ export default defineConfig({
     VitePWA({
       strategies: 'injectManifest', // برای کنترل کامل SW
       srcDir: 'src',
-      filename: 'sw.js',
+      filename: 'sw.js',  
+      
       manifest: {
         name: 'حساب گر',
         short_name: 'PWA App',
@@ -49,6 +50,12 @@ export default defineConfig({
   server: {
     port: 5173,
     open: true,
+  allowedHosts: [
+    'nonsyndicated-phenomenally-bodhi.ngrok-free.dev',
+  ],
+  headers: {
+    'Strict-Transport-Security': 'max-age=31536000; includeSubDomains; preload',
+  },
   },
   build: {
     sourcemap: true,

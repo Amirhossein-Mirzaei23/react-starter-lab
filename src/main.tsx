@@ -12,13 +12,28 @@ import { Toaster, toaster } from './components/ui/toaster';
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      const registration = await navigator.serviceWorker.register('/sw.js');
-      console.log('Service Worker registered with scope:', registration.scope);
+      // const registration = await navigator.serviceWorker.register('/sw.js');
+      // console.log('Service Worker registered with scope:', registration.scope);
+
+
+requestNotificationPermission();
     } catch (err) {
       console.error('Service Worker registration failed:', err);
     }
   });
 }
+
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) {
+    console.warn('Notifications not supported');
+    return;
+  }
+
+  const permission = await Notification.requestPermission();
+  console.log('Notification permission:', permission);
+}
+
+
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

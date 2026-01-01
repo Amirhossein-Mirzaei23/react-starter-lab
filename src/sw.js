@@ -3,20 +3,27 @@ import { precacheAndRoute } from 'workbox-precaching';
 precacheAndRoute(self.__WB_MANIFEST);
 
 
-
 self.addEventListener('push', (event) => {
-  const data = event.data.json();
-  const { title, body } = data;
+  let data = {
+    title: 'Notification',
+    body: 'You have a new message',
+  };
 
-  event.waitUntil(
-    self.registration.showNotification(title, {
-      body,
+  if (event.data) {
+    try {
+      data = event.data.json();
+    } catch (e) {
+      data.body = event.data.text();
+    }
+  }
+    event.waitUntil(
+    self.registration.showNotification(data.title, {
+      body: data.body,
       icon: '/logo192.png',
-      badge: '/logo192.png'
+      badge: '/logo192.png',
     })
   );
 });
-
 /// <reference lib="webworker" />
 
 self.addEventListener('install', (event) => {
@@ -28,13 +35,13 @@ self.addEventListener('activate', (event) => {
 });
 
 // این مثال ساده برای Push (برای توسعه)
-self.addEventListener('push', (event) => {
-  const data = event.data?.json() ?? {};
-  event.waitUntil(
-    self.registration.showNotification(data.title, {
-      body: data.body,
-      icon: 'logo192.png',
-    })
-  );
-});
+// self.addEventListener('push', (event) => {
+//   const data = event.data?.json() ?? {};
+//   event.waitUntil(
+//     self.registration.showNotification(data.title, {
+//       body: data.body,
+//       icon: 'logo192.png',
+//     })
+//   );
+// });
 
