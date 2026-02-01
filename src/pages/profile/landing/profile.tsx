@@ -11,7 +11,7 @@ export default function ProfilePage() {
   const showNavBar = useNavigationStore((s) => s.showNav);
   React.useEffect(() => {
     setTitle('حساب کاربری');
-    toggleBackButton(false);
+    toggleBackButton(true);
     sethasBackground(false);
     setAvatar(true);
     showNavBar();

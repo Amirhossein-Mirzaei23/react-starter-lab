@@ -6,7 +6,7 @@ import homeIcon from '@iconify-icons/solar/home-smile-angle-outline';
 import arrowLeftOutline from '@iconify-icons/solar/arrow-left-outline';
 import { useHeaderStore } from '../stores/headerStore/headerStore';
 import { useShallow } from 'zustand/react/shallow';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useBottomSheetStore } from '../stores/bottomSheetStore';
 import {
   LoginBottomSheetBodyContent,
@@ -32,10 +32,18 @@ function Header() {
   const positionStyle = isSticky ? 'fixed' : ''; // empty → custom color via inline style
 
   const navigate = useNavigate();
+  const location = useLocation();
 
-  const routerBack = () => {
-    navigate(-1); // -1 goes one step back in history
-  };
+const routerBack = () => {
+
+console.log(location);
+
+  if (window.history.length <= 1 || location.pathname === '/sign-in') {
+    navigate('/');
+  } else {
+    navigate(-1);
+  }
+};
 
   const token = useUserStore((s) => s.getToken());
   const userInfo = useUserStore((s) => s.getUserInfo());

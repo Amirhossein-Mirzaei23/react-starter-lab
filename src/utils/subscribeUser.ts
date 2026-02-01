@@ -1,4 +1,5 @@
 import { saveSubscription } from "../api/notification/notification.service";
+import { apiUrl } from "../App";
 
 function urlBase64ToUint8Array(base64String: string) {
   const padding = '='.repeat((4 - (base64String.length % 4)) % 4);
@@ -35,7 +36,7 @@ if (existing) {
   console.log('subscription',subscription);
   
 
-  await fetch('http://localhost:3000/push/subscribe', {
+  await fetch(`${apiUrl}/push/subscribe`, {
     method: 'POST',
     body: JSON.stringify({ userId, subscription }),
     headers: { 'Content-Type': 'application/json' },

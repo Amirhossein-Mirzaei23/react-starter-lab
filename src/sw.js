@@ -2,6 +2,8 @@ import { precacheAndRoute } from 'workbox-precaching';
 
 precacheAndRoute(self.__WB_MANIFEST);
 
+self.skipWaiting();
+self.clients.claim();
 
 self.addEventListener('push', (event) => {
   let data = {
