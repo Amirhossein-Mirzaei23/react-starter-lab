@@ -31,10 +31,9 @@ export default function AvatarUploader({
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    setLoading(true)
     // Preview image
-    const localUrl = URL.createObjectURL(file);
-    setPreview(localUrl);
+
 
     // Upload request
     try {
@@ -43,6 +42,9 @@ export default function AvatarUploader({
       onUploaded(image);
     } catch (err) {
       console.error('Upload error:', err);
+    } finally {
+    const localUrl = URL.createObjectURL(file);
+    setPreview(localUrl);
     }
   };
 
@@ -54,9 +56,10 @@ export default function AvatarUploader({
           bg="#222"
           className="!border-1 !border-slate-100 hover:opacity-80 transition"
           width={width}
+          
           height={height}
         >
-          <Avatar.Fallback className='!w-full flex justify-center items-center !h-full' >
+          <Avatar.Fallback  className='!w-full flex justify-center items-center !h-full' >
             {!loading ? (
               <Icon icon={uploaderIcon} className='!w-full !h-5/12' />
             ) : (

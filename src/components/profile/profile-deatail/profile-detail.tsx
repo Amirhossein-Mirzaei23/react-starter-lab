@@ -18,12 +18,9 @@ export default function ProfileDetail() {
   const setBackground = useBackgroundStore((s) => s.setBackground);
 
   useEffect(() => {
-    // BEFORE MOUNT (initial screen entry)
-    setBackground('#0A0A0C'); // or any hex
-
+    setBackground('#0A0A0C'); 
     return () => {
-      // BEFORE UNMOUNT (leaving screen)
-      setBackground(null); // reset --> gradient background
+      setBackground(null);
     };
   }, []);
 

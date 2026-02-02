@@ -27,12 +27,13 @@ import { useGroupDetail } from '../../../hooks/useGroupDetail';
 
 type props = {
   groupIdProps?: number;
+  creditorId:number
 };
 function dateToString(date: number) {
   return 'Mar 24, 2034';
 }
 
-export function CreateDebtContent({ groupIdProps }: props) {
+export function CreateDebtContent({ groupIdProps, creditorId }: props) {
   const [debtName, setdebtName] = useState<string>('');
   const [debtAmount, setDebtAmount] = useState<string>();
   const [groupId, setGroupId] = useState<number | undefined>(groupIdProps);
@@ -41,6 +42,7 @@ export function CreateDebtContent({ groupIdProps }: props) {
 
   const phoneRegex = /^09\d{9}$/;
   const { isOpen, setBottomSheet } = useBottomSheetStore();
+  const [createBillLoading,setCreateBillLoading] = useState<boolean>(false)
   const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
 
   const { refetch } = useGroupDetail(groupIdProps || 0);
@@ -52,18 +54,16 @@ export function CreateDebtContent({ groupIdProps }: props) {
     }
   }
   function createBillApi(groupId: number) {
-    console.log(!debtAmount, !debtName);
-
+    setCreateBillLoading(true)
     if (!debtAmount) {
       return;
     }
     if (!debtName) {
       return;
     }
-    console.log('dads');
 
     const payload: createBillPayload = {
-      creditorId: 2,
+      creditorId: creditorId,
       title: debtName,
       amount: Number(debtAmount),
     };
@@ -74,6 +74,8 @@ export function CreateDebtContent({ groupIdProps }: props) {
       })
       .catch((error: any) => {
         console.error(error);
+      }).finally(()=>{
+        setCreateBillLoading(false)
       });
   }
 
@@ -124,6 +126,7 @@ export function CreateDebtContent({ groupIdProps }: props) {
             انصراف
           </Button>
           <Button
+          loading={createBillLoading}
             colorScheme="blue"
             className="w-20 !text-[16px] !text-neutral-800 !font-medium !rounded-md"
             onClick={submit}

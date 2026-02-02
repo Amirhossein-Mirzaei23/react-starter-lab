@@ -45,7 +45,7 @@ export default function GroupsList() {
   return (
     <div className="flex flex-1 flex-col">
       {data.data && data.data.length > 0 ? (
-        <div className="grid grid-cols-1 gap-2 items-center">
+        <div className="grid grid-cols-1 gap-2 items-center !mb-6">
           {data.data.map((group: any) => (
             <div key={group.id}>
               <GroupCard

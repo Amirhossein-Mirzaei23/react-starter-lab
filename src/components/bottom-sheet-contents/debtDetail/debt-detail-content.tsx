@@ -1,33 +1,64 @@
-import { Button, Drawer, Progress } from '@chakra-ui/react';
+import { Button, Drawer, Progress, Spinner } from '@chakra-ui/react';
 import { useBottomSheetStore } from '../../../stores/bottomSheetStore';
 
-import { useSnackBarStore } from '../../../stores/snackbarStore/snackBarStore';
+import { showSnackBarPayload, snackbarTypesEnum, useSnackBarStore } from '../../../stores/snackbarStore/snackBarStore';
 import BillCardTitle from '../../pendding-bills/bill-card-title';
 import { numberSeprator } from '../../../utils/numberSeprator';
 import { sendNotification } from '../../../api/notification/notification.service';
 import { sendNotificationPayload } from '../../../api/notification/notification.types';
+import { useUserStore } from '../../../stores/userStore/userStore';
+import alramBold from '@iconify-icons/solar/alarm-bold';
+import { Icon } from '@iconify/react';
+import { useState } from 'react';
 
 type props = {
   debtsData?: Array<any>;
+  group: any;
 };
 
-export function DebtDetailContent({ debtsData }: props) {
+export function DebtDetailContent({ debtsData, group }: props) {
   const { isOpen, setBottomSheet } = useBottomSheetStore();
+  const [loadingButtons, setLoadingButtons] = useState<{ [key: string]: boolean }>({});
+
   const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
-  function pushNotification(userId:number) {
-    const payload:sendNotificationPayload = {
-      userId:1,
-      title:'test',
-      message:'pay your bill!'
-    }
-    sendNotification(payload).then((res)=>{
-      console.log(res);
-      
-    }).catch(err=>{
-      console.error(err);
-      
-    })
-    
+
+  const userId2 = useUserStore().getUserInfo().id;
+
+  function pushNotification(debt: any) {
+    console.log(group);
+
+    const userId = debt.debtor.id;
+    const payload: sendNotificationPayload = {
+      userId: userId,
+      title: 'یادآوری پرداخت بدهی',
+      message:
+        'سلام ' +
+        debt.debtor.name +
+        ' عزیز! لطفاً قبض "' +
+        debt.title +
+        '" خود را در گروه ' +
+        group.name +
+        ' به موقع پرداخت کنید تا دوستانتان خوشحال شوند.',
+    };
+        setLoadingButtons((prev) => ({ ...prev, [debt.id]: true }));
+    sendNotification(payload)
+      .then((res) => {
+        console.log(res);
+        const snackBarPayload: showSnackBarPayload = {
+                  type: snackbarTypesEnum.success,
+                  description: 'نوتیفیکیشن با موفقیت ارسال شد',
+                };
+                showSnackbar(snackBarPayload);
+        closeBottomSheet()
+      })
+      .catch((err) => {
+        console.error(err);
+        
+      }).finally(()=>{
+        console.log('fan');
+        
+       setLoadingButtons((prev) => ({ ...prev, [debt.id]: false }));
+      });
   }
 
   const getBillProgressColor = (percent: number) => {
@@ -46,29 +77,43 @@ export function DebtDetailContent({ debtsData }: props) {
   return (
     <>
       <Drawer.Body className="!overflow-visible">
-        <div  className="grid grid-cols-1 items-center justify-center gap-4 h-auto">
+        <div className="grid grid-cols-1 items-center justify-center gap-4 h-auto">
           {debtsData &&
             debtsData.map((debt) => {
               const remainingAmount = debt.amount - debt.paid;
               const paidPercent = (debt.paid / debt.amount) * 100;
 
               return (
-                <div onClick={()=> pushNotification(debt.debtor.id)} className="flex flex-row-reverse items-center justify-between !w-full bg-slate-200 !p-3 !border-2 !border-neutral-700 !rounded-xl relative">
-                  <div className="flex flex-col items-center">
-                    <BillCardTitle
-                      title={debt.debtor.name}
-                      image={debt.debtor.image || ''}
-                    ></BillCardTitle>
+               <div className={remainingAmount == 0?  'opacity-25':  'opacity-100' } >
+                 <div className="grid grid-cols-6 items-center !w-full ">
+                  <div className="!h-full col-span-1 translate-x-px " style={{paddingTop:'2px',paddingBlock:'2px'}} >
+                    <Button disabled={remainingAmount == 0} onClick={() => pushNotification(debt)} loading={loadingButtons[debt.id]} className="!bg-slate-200  !border-1 !border-slate-400 !h-full flex !rounded-xl !opacity-100">
+                      {/* ارسال یادآوری */}
+
+                      <Icon icon={alramBold}></Icon>
+                    </Button>
                   </div>
-                  <div className="flex gap-1 items-center text-slate-950">
-                    <span>مانده:</span>
-                    {remainingAmount ? (
-                      <p>{numberSeprator(remainingAmount)}</p>
-                    ) : (
-                      <p>این بدهی پرداخت شده است</p>
-                    )}
+                  <div
+                    
+                    className="col-span-5 flex flex-row-reverse items-center justify-between !w-full bg-slate-200 !p-3   !border-1 !border-slate-400  !rounded-xl relative"
+                  >
+                    <div className="flex flex-col items-center">
+                      <BillCardTitle
+                        title={debt.debtor.name}
+                        image={debt.debtor.image || ''}
+                      ></BillCardTitle>
+                    </div>
+                    <div className="flex gap-1 items-center text-slate-950">
+                     
+                      {remainingAmount ? (
+                        <p> <span>مانده:</span>{numberSeprator(remainingAmount)}</p>
+                      ) : (
+                        <p>پرداخت شده</p>
+                      )}
+                    </div>
                   </div>
                 </div>
+               </div>
               );
             })}
         </div>

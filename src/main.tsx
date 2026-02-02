@@ -8,12 +8,14 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { queryClient } from './queryClient';
 import { LocaleProvider } from '@chakra-ui/react';
 import { Toaster, toaster } from './components/ui/toaster';
+import { useUserStore } from './stores/userStore/userStore';
+import { askForPermission } from './utils/askForPermision';
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', async () => {
     try {
-      // const registration = await navigator.serviceWorker.register('/sw.js');
-      // console.log('Service Worker registered with scope:', registration.scope);
+      const registration = await navigator.serviceWorker.register('/sw.js');
+      console.log('Service Worker registered with scope:', registration.scope);
 
 
 requestNotificationPermission();
@@ -29,8 +31,13 @@ async function requestNotificationPermission() {
     return;
   }
 
-  const permission = await Notification.requestPermission();
-  console.log('Notification permission:', permission);
+
+  const userId = useUserStore()?.userInfo?.id
+  if (userId) {
+    askForPermission(userId)
+  }else {
+    const permission = await Notification.requestPermission();
+  }
 }
 
 

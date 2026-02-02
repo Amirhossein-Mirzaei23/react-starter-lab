@@ -19,6 +19,7 @@ import { FindUserPayload } from '../../../api/friends/friends.types';
 import { addFriendToGroupApi, createGroupApi } from '../../../api/groups/groups-services';
 import { CreateGroupDto } from '../../../api/groups/groups.types';
 import { useUserGroupsList } from '../../../hooks/useGroupsList';
+import { useFriendList } from '../../../hooks/useFrinedList';
 
 type props = {
   isFindUSerProps?: boolean;
@@ -48,11 +49,24 @@ export function CreateGroupBottomSheetContent({
   const { isOpen, setBottomSheet } = useBottomSheetStore();
   const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
   const { refetch } = useUserGroupsList({ userId, page: 1, limit: 100 });
-  React.useEffect(() => {
-    if (isFindUSer) {
-      getFriendsList();
-    }
-  }, [isFindUSer]);
+    const { data, isLoading, error } = useFriendList(userId);
+
+React.useEffect(() => {
+  if (!data) return;
+
+  console.log(data);
+  
+  let listData = data;
+
+  if (joinedMembersArray?.length) {
+    const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
+    listData = data.data.filter(
+      (friend: any) => !joinedIds.has(friend.friendInfo.id)
+    );
+  }
+
+  setFriendsData(listData);
+}, [data, joinedMembersArray]);
 
   function checkNameValidation(val: string | undefined) {
     const phone = val;
@@ -84,7 +98,7 @@ export function CreateGroupBottomSheetContent({
         setGroupId(res.id);
         setBottomSheet({ isOpen: false });
         seFindUSer(true);
-        getFriendsList();
+
         setTimeout(() => {
           setBottomSheet({ isOpen: true, size: 'full', title: `اعضای ${groupName}` });
         }, 20);
@@ -94,17 +108,13 @@ export function CreateGroupBottomSheetContent({
       });
   }
   function getFriendsList() {
-    friendsListApi(userId)
-      .then((res) => {
+let listData = data
         if (joinedMembersArray) {
           const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
-          res.data = res.data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+           listData = data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+      
         }
-        setFriendsData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    setFriendsData(listData)
   }
   const toggleSelect = (id: number) => {
     setFriendIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -120,9 +130,7 @@ export function CreateGroupBottomSheetContent({
       friendIds,
     };
     addFriendToGroupApi(Number(groupId), payload).then((res) => {
-      if (groupIdProps) {
         refetch();
-      }
       setBottomSheet({ isOpen: false });
     });
   }

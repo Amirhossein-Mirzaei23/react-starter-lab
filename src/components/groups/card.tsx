@@ -105,7 +105,7 @@ export default function GroupCard({
             {membersArray.map((member, index) => (
               <Avatar.Root key={index} size="md">
                 <Avatar.Fallback name={member.name} />
-                <Avatar.Image src={member.image || `/profile${index}.jpg`} />
+                <Avatar.Image src={member.image} />
               </Avatar.Root>
             ))}
           </AvatarGroup>

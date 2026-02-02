@@ -6,8 +6,6 @@ export async function askForPermission(userId:number) {
   console.log('permission',permission);
   
   if (permission === 'granted'){
-    await navigator.serviceWorker.register('/sw.js');
-
      subscribeUser(userId)
   }
 }

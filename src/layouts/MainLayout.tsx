@@ -11,13 +11,14 @@ export default function MainLayout() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col text-white relative to-slate-600 overflow-hidden ${backgroundStyle}`}
+      className={`min-h-[100dvh] flex flex-col text-white relative  to-slate-600 overflow-hidden ${backgroundStyle}`}
       style={backgroundHex ? { backgroundColor: backgroundHex } : undefined}
     >
       <Header />
       <main className="flex-1 container mx-auto !p-4 flex flex-col">
         <Outlet />
       </main>
+  
       <NavigationBar />
     </div>
   );

@@ -1,6 +1,6 @@
 import { Button, Drawer, Field } from '@chakra-ui/react';
 import { useBottomSheetStore } from '../../../stores/bottomSheetStore';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import FloatingLabelInput from '../../ui/floating-label-input';
 import { userDto } from '../../../types';
 import FriendCard from '../../friends-container/friendCard';
@@ -12,6 +12,7 @@ import {
 } from '../../../stores/snackbarStore/snackBarStore';
 import { findUserApi, sendFriendshipRequestApi } from '../../../api/friends/friends-services';
 import { FindUserPayload } from '../../../api/friends/friends.types';
+import { useFindUser } from '../../../hooks/useFindUser';
 
 export function FindFriendBottomSheetContent() {
   const [phone, setPhone] = useState<string>('');
@@ -29,8 +30,11 @@ export function FindFriendBottomSheetContent() {
     setPhoneError('');
 
     if (!phone?.toString() || phone?.toString().length < 1) {
+      console.log('state');
+      
       setPhoneError('لطفا شماره همراه خود را وارد نمایید.');
     } else if (!phoneRegex.test(phone)) {
+        console.log('state2');
       setPhoneError('شماره همراه وارد شده صحیح نیست.');
       hasError = true;
     }
@@ -63,19 +67,29 @@ export function FindFriendBottomSheetContent() {
     if (checPhoneValidation(phone)) {
       return;
     }
-    await findUser({ phone });
+    await findUser(phone);
     closeBottomSheet();
     setTimeout(() => {
       setBottomSheet({ isOpen: true, size: 'xl' });
     }, 100);
   }
 
-  async function findUser(payload: FindUserPayload) {
+    React.useEffect(() => {
+      if (friendData) {
+      const isValidPhone  = !checPhoneValidation(phone)
+      if (isValidPhone) {
+        findUser(phone)
+      }
+      }
+    }, [phone]);
+
+  async function findUser(phone:string) {
     try {
-      const res = await findUserApi(payload);
+      const { data, isLoading, error, refetch } = useFindUser(phone);
+      const res = data
       console.log(res);
 
-      setFriendData(res.data);
+      setFriendData(res?.data);
     } catch (err) {
       console.log('got err', err);
     }
@@ -95,6 +109,7 @@ export function FindFriendBottomSheetContent() {
                 labelBgColor="#314158"
                 value={phone}
                 onChange={(e) => setPhone(e.currentTarget.value)}
+          
                 type="number"
                 minLength={11}
                 shadow={'none'}
