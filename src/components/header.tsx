@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Avatar, Button } from '@chakra-ui/react';
 import { Icon } from '@iconify/react';
 import noLoginIcon from '@iconify-icons/solar/user-heart-rounded-outline';
@@ -7,15 +7,13 @@ import arrowLeftOutline from '@iconify-icons/solar/arrow-left-outline';
 import { useHeaderStore } from '../stores/headerStore/headerStore';
 import { useShallow } from 'zustand/react/shallow';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useBottomSheetStore } from '../stores/bottomSheetStore';
-import {
-  LoginBottomSheetBodyContent,
-  LoginBottomSheetFooterContent,
-} from './bottom-sheet-contents/login-content';
+
+
+
 import { useUserStore } from '../stores/userStore/userStore';
 
 function Header() {
-  const { avatar, title, backButton, appIcon, hasBackground, isSticky } = useHeaderStore(
+  const headerState = useHeaderStore(
     useShallow((state) => ({
       avatar: state.avatar,
       title: state.title,
@@ -26,46 +24,51 @@ function Header() {
     })),
   );
 
-  // decide background
-  const backgroundStyle = hasBackground ? 'bg-[#111925]' : ''; // empty → custom color via inline style
+  const { avatar, title, backButton, appIcon, hasBackground, isSticky } = headerState;
 
-  const positionStyle = isSticky ? 'fixed' : ''; // empty → custom color via inline style
+  // Memoize computed styles
+  const styles = useMemo(() => ({
+    background: hasBackground ? 'bg-[#111925]' : '',
+    position: isSticky ? 'fixed' : '',
+  }), [hasBackground, isSticky]);
 
   const navigate = useNavigate();
   const location = useLocation();
 
-const routerBack = () => {
+  const routerBack = useCallback(() => {
+    if (window.history.length <= 1 || location.pathname === '/sign-in') {
+      navigate('/');
+    } else {
+      navigate(-1);
+    }
+  }, [navigate, location.pathname]);
 
-console.log(location);
-
-  if (window.history.length <= 1 || location.pathname === '/sign-in') {
-    navigate('/');
-  } else {
-    navigate(-1);
-  }
-};
-
-  const token = useUserStore((s) => s.getToken());
-  const userInfo = useUserStore((s) => s.getUserInfo());
+  const userAuth = useUserStore(
+    useShallow((state) => ({
+      token: state.getToken(),
+      userInfo: state.getUserInfo(),
+      isAuthenticated: state.isAuthenticated(),
+    })),
+  );
 
   return (
     <div className="h-14">
       <div
-        className={`items-center grid grid-cols-3 position  top-0 right-0 !py-3 !px-4 w-full   z-50 ${backgroundStyle} ${positionStyle}`}
+        className={`items-center grid grid-cols-3 position top-0 right-0 !py-3 !px-4 w-full z-50 ${styles.background} ${styles.position}`}
       >
         {/* bg-gray-950 */}
         <div>
-          {avatar && token && (
+          {avatar && userAuth.token && (
             <div className="">
               <Link to="/profile">
                 <Avatar.Root className="!border-1 !border-slate-100 !bg-slate-800" bg="#5F7087">
-                  <Avatar.Fallback name={userInfo.name} />
-                  <Avatar.Image src={userInfo.image} />
+                  <Avatar.Fallback name={userAuth?.userInfo?.name} />
+                  <Avatar.Image src={userAuth?.userInfo?.image} />
                 </Avatar.Root>
               </Link>
             </div>
           )}
-          {avatar && !token && (
+          {avatar && !userAuth.token && (
             <Link to="/sign-in">
               <Button variant="surface">
                 <Icon icon={noLoginIcon} width="24" height="24" className="text-neutral-200" />

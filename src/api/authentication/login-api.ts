@@ -1,8 +1,8 @@
-// src/api/users.ts
-import { apiUrl } from '../../App';
+// src/api/authentication/login-api.ts
+import { API_URL } from '../../App';
 import { apiClient } from '../http';
 import { UserLoginPayload, UserLoginResponse } from './authentication.types';
 
 export async function userLoginApi(payload: UserLoginPayload): Promise<UserLoginResponse> {
-  return apiClient.post<UserLoginResponse>(`${apiUrl}/auth/login`, payload);
+  return apiClient.post<UserLoginResponse>(`${API_URL}/auth/login`, payload);
 }
