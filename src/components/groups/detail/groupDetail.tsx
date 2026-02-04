@@ -64,33 +64,30 @@ export default function GroupDetail() {
   // };
 
   const getUniqueBills = (items: any[]) => {
-  const map = new Map<string, any>();
+    const map = new Map<string, any>();
 
-  for (const item of items) {
-    const key = item.referenceId;
+    for (const item of items) {
+      const key = item.referenceId;
 
-    if (!map.has(key)) {
-      // clone object to avoid mutating original
-      map.set(key, { ...item });
-    } else {
-      const existing = map.get(key);
+      if (!map.has(key)) {
+        // clone object to avoid mutating original
+        map.set(key, { ...item });
+      } else {
+        const existing = map.get(key);
 
-      existing.paid += item.paid;
-      existing.amount += item.amount;
-      // optional: keep amount consistent
-      // existing.amount = Math.max(existing.amount, item.amount);
+        existing.paid += item.paid;
+        existing.amount += item.amount;
+        // optional: keep amount consistent
+        // existing.amount = Math.max(existing.amount, item.amount);
 
-      // optional: recompute isPaid
-
+        // optional: recompute isPaid
+      }
     }
-  }
 
-  return Array.from(map.values());
-};
+    return Array.from(map.values());
+  };
 
-
-
-const openCreateBillBottomSheet = () => {
+  const openCreateBillBottomSheet = () => {
     if (creditorId) {
       setBottomSheet({
         isOpen: true,
@@ -186,106 +183,96 @@ const openCreateBillBottomSheet = () => {
           </div>
         </div>
         <div className="  w-full flex flex-col gap-2 !h-fit">
-          
-             {data?.bills && data.bills.length ? (
-              <>
-          <p
-            className="!text-[16px] !font-medium !leading-7  sticky
+          {data?.bills && data.bills.length ? (
+            <>
+              <p
+                className="!text-[16px] !font-medium !leading-7  sticky
     z-20
     bg-[#191C20]
     !w-full
     !p-1
     backdrop-blur
    -top-1"
-          >
-            بدهی های ثبت شده
-          </p>
-          <div className=" w-full flex flex-col items-center gap-3 !mb-32 !p-3">
-         
-             { getUniqueBills(data.bills).map((bill: any) => {
-                const date = new Date();
-                const paidPercent = (bill.paid / bill.amount) * 100;
-                return (
-                  <div
-                    key={`${bill.id}`}
-                    onClick={() => openDebtDetailBottomSheet(bill.referenceId)}
-                    className="flex flex-col w-full relative overflow-hidden justify-items-center !content-center !justify-center  gap-2 !p-7  text-neutral-800 bg-slate-100 !rounded-xl"
-                  >
-                    <div className="flex w-full !justify-between   ">
-                      <p className="text-xs font-light text-nowrap !truncate !max-w-5/12 text-start  !w-full">
-                        {bill.title}
-                      </p>
-                      <p
-                        dir="ltr"
-                        className="text-xs font-light text-nowrap !truncate !max-w-5/12 text-start  !w-full"
-                      >
-                        {bill.paid} / {bill.amount}
-                      </p>
+              >
+                بدهی های ثبت شده
+              </p>
+              <div className=" w-full flex flex-col items-center gap-3 !mb-32 !p-3">
+                {getUniqueBills(data.bills).map((bill: any) => {
+                  const date = new Date();
+                  const paidPercent = (bill.paid / bill.amount) * 100;
+                  return (
+                    <div
+                      key={`${bill.id}`}
+                      onClick={() => openDebtDetailBottomSheet(bill.referenceId)}
+                      className="flex flex-col w-full relative overflow-hidden justify-items-center !content-center !justify-center  gap-2 !p-7  text-neutral-800 bg-slate-100 !rounded-xl"
+                    >
+                      <div className="flex w-full !justify-between   ">
+                        <p className="text-xs font-light text-nowrap !truncate !max-w-5/12 text-start  !w-full">
+                          {bill.title}
+                        </p>
+                        <p
+                          dir="ltr"
+                          className="text-xs font-light text-nowrap !truncate !max-w-5/12 text-start  !w-full"
+                        >
+                          {bill.paid} / {bill.amount}
+                        </p>
+                      </div>
+                      <div className="!w-full absolute -bottom-6 left-0 ">
+                        <Progress.Root
+                          maxW={'12/12'}
+                          min={0}
+                          max={100}
+                          colorPalette={getBillProgressColor(paidPercent || 2)}
+                          className="!w-full"
+                          defaultValue={paidPercent || 2}
+                        >
+                          <Progress.Track>
+                            <Progress.Range />
+                          </Progress.Track>
+                          <Progress.Label />
+                          <Progress.ValueText />
+                        </Progress.Root>
+                      </div>
                     </div>
-                    <div className="!w-full absolute -bottom-6 left-0 ">
-                      <Progress.Root
-                        maxW={'12/12'}
-                        min={0}
-                        max={100}
-                        colorPalette={getBillProgressColor(paidPercent || 2)}
-                        className="!w-full"
-                        defaultValue={paidPercent || 2}
-                      >
-                        <Progress.Track>
-                          <Progress.Range />
-                        </Progress.Track>
-                        <Progress.Label />
-                        <Progress.ValueText />
-                      </Progress.Root>
-                    </div>
-                  </div>
-                );
-              }
-)}
-            
-          </div>
-          </>
-         ) : (
-          <div>
-                {isLoading ? 
-                  (<div className='flex flex-col fixed top-[60%] right-0 gap-32 !w-full  justify-center items-center ' > 
-                    <Spinner size={'xl'} />
-                  </div>)
-                 :
-              
-                <div className='!px-6 flex flex-col fixed top-84 right-0 gap-32 !w-full justify-center items-center ' >
-
-                <img
-                 
-                src="/illusteration/404.gif"
-                className="rounded-2xl shadow-lg shadow-neutral-300"
-                alt=""
-              />
-       <Button
-          className="!w-11/12 !h-11 !rounded-xl  !bg-zinc-900  !text-[#fcfcfc] !text-sm !font-semibold"
-     
-          onClick={openCreateBillBottomSheet}
-        >
-          اولین قبض خود را ثبت کنید
-        </Button>
-             </div>
-                 }
+                  );
+                })}
               </div>
-     
-            )}
+            </>
+          ) : (
+            <div>
+              {isLoading ? (
+                <div className="flex flex-col fixed top-[60%] right-0 gap-32 !w-full  justify-center items-center ">
+                  <Spinner size={'xl'} />
+                </div>
+              ) : (
+                <div className="!px-6 flex flex-col fixed top-84 right-0 gap-32 !w-full justify-center items-center ">
+                  <img
+                    src="/illusteration/404.gif"
+                    className="rounded-2xl shadow-lg shadow-neutral-300"
+                    alt=""
+                  />
+                  <Button
+                    className="!w-11/12 !h-11 !rounded-xl  !bg-zinc-900  !text-[#fcfcfc] !text-sm !font-semibold"
+                    onClick={openCreateBillBottomSheet}
+                  >
+                    اولین قبض خود را ثبت کنید
+                  </Button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
-       {data?.bills?.length && (
-      <div className="!fixed bottom-16 flex items-center justify-end !p-4 !w-full">
-        <Button
-          className="!fixed bottom-16 !w-[56px] !h-[56px] !p-px !rounded-full !shadow-2xl !bg-gray-200 !border-2 !border-cyan-700"
-          onClick={openCreateBillBottomSheet}
-        >
-          <Icon icon={addIcon} className="!w-[56px] !h-[56px] text-cyan-900" />
-        </Button>
-         
-      </div>
-        )}
+      {data?.bills?.length && (
+        <div className="!fixed bottom-16 flex items-center justify-end !p-4 !w-full">
+          <Button
+            className="!fixed bottom-16 !w-[56px] !h-[56px] !p-px !rounded-full !shadow-2xl !bg-gray-200 !border-2 !border-cyan-700"
+            onClick={openCreateBillBottomSheet}
+          >
+            <Icon icon={addIcon} className="!w-[56px] !h-[56px] text-cyan-900" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

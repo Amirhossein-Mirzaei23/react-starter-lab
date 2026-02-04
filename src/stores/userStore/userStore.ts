@@ -23,10 +23,10 @@ export const useUserStore = create<UserInfoStore>()(
     {
       name: 'user-auth-storage',
       storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ 
-        userInfo: state.userInfo, 
-        token: state.token 
-      })
+      partialize: (state) => ({
+        userInfo: state.userInfo,
+        token: state.token,
+      }),
     },
   ),
 );

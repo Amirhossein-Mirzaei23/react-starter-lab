@@ -1,6 +1,6 @@
-import { apiUrl } from "../../App";
-import { apiClient } from "../http";
-import { saveSubscriptionPayload, sendNotificationPayload } from "./notification.types";
+import { apiUrl } from '../../App';
+import { apiClient } from '../http';
+import { saveSubscriptionPayload, sendNotificationPayload } from './notification.types';
 
 export async function saveSubscription(payload: saveSubscriptionPayload): Promise<any> {
   return apiClient.post<any>(`${apiUrl}/push/subscribe`, payload);

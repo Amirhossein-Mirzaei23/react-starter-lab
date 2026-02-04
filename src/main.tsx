@@ -38,9 +38,6 @@ async function requestNotificationPermission() {
   }
 }
 
-
-
-
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <div dir="rtl">

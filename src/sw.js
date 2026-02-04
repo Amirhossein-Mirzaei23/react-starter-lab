@@ -18,12 +18,12 @@ self.addEventListener('push', (event) => {
       data.body = event.data.text();
     }
   }
-    event.waitUntil(
+  event.waitUntil(
     self.registration.showNotification(data.title, {
       body: data.body,
       icon: '/logo192.png',
       badge: '/logo192.png',
-    })
+    }),
   );
 });
 /// <reference lib="webworker" />
@@ -46,4 +46,3 @@ self.addEventListener('activate', (event) => {
 //     })
 //   );
 // });
-

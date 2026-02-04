@@ -31,10 +31,10 @@ export function FindFriendBottomSheetContent() {
 
     if (!phone?.toString() || phone?.toString().length < 1) {
       console.log('state');
-      
+
       setPhoneError('لطفا شماره همراه خود را وارد نمایید.');
     } else if (!phoneRegex.test(phone)) {
-        console.log('state2');
+      console.log('state2');
       setPhoneError('شماره همراه وارد شده صحیح نیست.');
       hasError = true;
     }
@@ -74,19 +74,19 @@ export function FindFriendBottomSheetContent() {
     }, 100);
   }
 
-    React.useEffect(() => {
-      if (friendData) {
-      const isValidPhone  = !checPhoneValidation(phone)
+  React.useEffect(() => {
+    if (friendData) {
+      const isValidPhone = !checPhoneValidation(phone);
       if (isValidPhone) {
-        findUser(phone)
+        findUser(phone);
       }
-      }
-    }, [phone]);
+    }
+  }, [phone]);
 
-  async function findUser(phone:string) {
+  async function findUser(phone: string) {
     try {
       const { data, isLoading, error, refetch } = useFindUser(phone);
-      const res = data
+      const res = data;
       console.log(res);
 
       setFriendData(res?.data);
@@ -109,7 +109,6 @@ export function FindFriendBottomSheetContent() {
                 labelBgColor="#314158"
                 value={phone}
                 onChange={(e) => setPhone(e.currentTarget.value)}
-          
                 type="number"
                 minLength={11}
                 shadow={'none'}

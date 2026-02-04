@@ -61,7 +61,7 @@ async function httpFetch<T = any>(
 
     let data;
     const contentType = res.headers.get('content-type');
-    
+
     try {
       if (contentType && contentType.includes('application/json')) {
         data = await res.json();
@@ -76,7 +76,7 @@ async function httpFetch<T = any>(
     if (!res.ok) {
       const message = data?.message || res.statusText || `HTTP ${res.status} Error`;
       const error = createApiError(message, res.status, data);
-      
+
       // Only show toast if not explicitly skipped
       if (!config?.skipErrorToast) {
         const toastPayload = {
@@ -93,7 +93,7 @@ async function httpFetch<T = any>(
     return data as T;
   } catch (fetchError) {
     clearTimeout(id);
-    
+
     if (fetchError instanceof Error) {
       if (fetchError.name === 'AbortError') {
         throw createApiError('Request timeout', undefined, { timeout: true });
@@ -102,14 +102,14 @@ async function httpFetch<T = any>(
         throw fetchError; // Re-throw API errors
       }
     }
-    
+
     // Network or other errors
     const networkError = createApiError(
       fetchError instanceof Error ? fetchError.message : 'Network error',
       undefined,
-      { originalError: fetchError }
+      { originalError: fetchError },
     );
-    
+
     if (!config?.skipErrorToast) {
       showSnackbar({
         description: 'Network connection error',
@@ -117,7 +117,7 @@ async function httpFetch<T = any>(
         closable: true,
       });
     }
-    
+
     throw networkError;
   }
 }
@@ -153,7 +153,7 @@ export function createAuthenticatedApiClient(getToken: () => string) {
 
 function addAuthHeader(config?: HttpRequestConfig, token?: string): HttpRequestConfig {
   if (!token) return config || {};
-  
+
   return {
     ...config,
     headers: {

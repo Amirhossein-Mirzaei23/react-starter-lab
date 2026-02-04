@@ -11,17 +11,17 @@ export default function AvatarUploader({
   onUploaded,
   height = '72px',
   width = '72px',
-  showEditIcon = true
+  showEditIcon = true,
 }: {
   height?: string;
   width?: string;
   image?: string;
-  showEditIcon?:boolean
+  showEditIcon?: boolean;
   onUploaded: (image: updaloerResponse) => void;
 }) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string>(image || '');
-  const [loading, setLoading] = useState<boolean>(image? true : false);
+  const [loading, setLoading] = useState<boolean>(image ? true : false);
   // Trigger file input
   const triggerFilePicker = () => {
     fileInputRef.current?.click();
@@ -31,9 +31,8 @@ export default function AvatarUploader({
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setLoading(true)
+    setLoading(true);
     // Preview image
-
 
     // Upload request
     try {
@@ -43,8 +42,8 @@ export default function AvatarUploader({
     } catch (err) {
       console.error('Upload error:', err);
     } finally {
-    const localUrl = URL.createObjectURL(file);
-    setPreview(localUrl);
+      const localUrl = URL.createObjectURL(file);
+      setPreview(localUrl);
     }
   };
 
@@ -56,22 +55,27 @@ export default function AvatarUploader({
           bg="#222"
           className="!border-1 !border-slate-100 hover:opacity-80 transition"
           width={width}
-          
           height={height}
         >
-          <Avatar.Fallback  className='!w-full flex justify-center items-center !h-full' >
+          <Avatar.Fallback className="!w-full flex justify-center items-center !h-full">
             {!loading ? (
-              <Icon icon={uploaderIcon} className='!w-full !h-5/12' />
+              <Icon icon={uploaderIcon} className="!w-full !h-5/12" />
             ) : (
               <Spinner size="md" borderWidth="2px" />
             )}
           </Avatar.Fallback>
-          <Avatar.Image onErrorCapture={() => setLoading(false)} onLoadCapture={() => setLoading(false)} src={image || preview} />
-          {showEditIcon && <Float placement="bottom-start" offsetX="-4" offsetY="3">
-            <div className="bg-slate-100 rounded-full !p-1">
-            <Icon icon={editIcon} className="!text-neutral-900 !ml-1" width={'16'}></Icon> 
-            </div>
-          </Float>}
+          <Avatar.Image
+            onErrorCapture={() => setLoading(false)}
+            onLoadCapture={() => setLoading(false)}
+            src={image || preview}
+          />
+          {showEditIcon && (
+            <Float placement="bottom-start" offsetX="-4" offsetY="3">
+              <div className="bg-slate-100 rounded-full !p-1">
+                <Icon icon={editIcon} className="!text-neutral-900 !ml-1" width={'16'}></Icon>
+              </div>
+            </Float>
+          )}
         </Avatar.Root>
       </div>
 

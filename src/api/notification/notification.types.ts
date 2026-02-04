@@ -1,10 +1,10 @@
 export interface saveSubscriptionPayload {
-    userId:number,
-    subscription:PushSubscription
+  userId: number;
+  subscription: PushSubscription;
 }
 
 export interface sendNotificationPayload {
-    userId:number;
-    title:string;
-    message:string
+  userId: number;
+  title: string;
+  message: string;
 }

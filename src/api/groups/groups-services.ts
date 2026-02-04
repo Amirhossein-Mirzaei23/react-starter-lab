@@ -1,7 +1,12 @@
 import { apiUrl } from '../../App';
 import { userDto } from '../../types';
 import { apiClient } from '../http';
-import { createBillPayload, CreateGroupDto, UpdateGroupDto, UserGroupListPayload } from './groups.types';
+import {
+  createBillPayload,
+  CreateGroupDto,
+  UpdateGroupDto,
+  UserGroupListPayload,
+} from './groups.types';
 
 export async function createGroupApi(payload: CreateGroupDto): Promise<any> {
   return apiClient.post<{ data: userDto; message: string }>(`${apiUrl}/groups/create`, payload);
@@ -37,15 +42,12 @@ export async function assignBillToGroupApi(
   return apiClient.post<Promise<any>>(`${apiUrl}/groups/${groupId}/assign-bill`, payload);
 }
 
-
-
 export async function createBillForGroupMembers(
   groupId: number,
   payload: createBillPayload,
 ): Promise<any> {
   return apiClient.post<Promise<any>>(`${apiUrl}/groups/${groupId}/create-bill`, payload);
 }
-
 
 export async function getUserGroupsApi(payload: UserGroupListPayload): Promise<any> {
   return apiClient.post<Promise<any>>(`${apiUrl}/groups/list`, payload);

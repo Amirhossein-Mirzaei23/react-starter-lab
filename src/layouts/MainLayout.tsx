@@ -6,9 +6,8 @@ import { useBackgroundStore } from '../stores/backgroundStore/background.store';
 export default function MainLayout() {
   const backgroundHex = useBackgroundStore((state) => state.backgroundHex);
 
-  const backgroundClass = backgroundHex === null 
-    ? 'bg-gradient-to-b from-slate-800 to-slate-600' 
-    : '';
+  const backgroundClass =
+    backgroundHex === null ? 'bg-gradient-to-b from-slate-800 to-slate-600' : '';
 
   return (
     <div

@@ -1,4 +1,4 @@
-import { subscribeUser } from "./subscribeUser";
+import { subscribeUser } from './subscribeUser';
 
 export async function askForPermission(userId: number): Promise<boolean> {
   if (!('Notification' in window)) {
@@ -14,12 +14,12 @@ export async function askForPermission(userId: number): Promise<boolean> {
   try {
     const permission = await Notification.requestPermission();
     console.log('Notification permission:', permission);
-    
+
     if (permission === 'granted') {
       await subscribeUser(userId);
       return true;
     }
-    
+
     return false;
   } catch (error) {
     console.error('Error requesting notification permission:', error);

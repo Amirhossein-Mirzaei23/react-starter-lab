@@ -8,8 +8,6 @@ import { useHeaderStore } from '../stores/headerStore/headerStore';
 import { useShallow } from 'zustand/react/shallow';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-
-
 import { useUserStore } from '../stores/userStore/userStore';
 
 function Header() {
@@ -27,10 +25,13 @@ function Header() {
   const { avatar, title, backButton, appIcon, hasBackground, isSticky } = headerState;
 
   // Memoize computed styles
-  const styles = useMemo(() => ({
-    background: hasBackground ? 'bg-[#111925]' : '',
-    position: isSticky ? 'fixed' : '',
-  }), [hasBackground, isSticky]);
+  const styles = useMemo(
+    () => ({
+      background: hasBackground ? 'bg-[#111925]' : '',
+      position: isSticky ? 'fixed' : '',
+    }),
+    [hasBackground, isSticky],
+  );
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -80,7 +81,7 @@ function Header() {
         <div className="flex justify-center items-center text-nowrap">
           {title && <div>{title}</div>}
         </div>
-        <div className='z-50' >
+        <div className="z-50">
           {backButton && (
             <div onClick={routerBack} className="flex justify-end items-center z-50 ">
               <Icon icon={arrowLeftOutline} width="24" height="24" />

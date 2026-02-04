@@ -16,7 +16,7 @@ export interface UserGroupListPayload {
 }
 export interface createBillPayload {
   creditorId: number;
-  title:string
+  title: string;
   debtorId?: number;
   groupId?: number;
   amount: number;
