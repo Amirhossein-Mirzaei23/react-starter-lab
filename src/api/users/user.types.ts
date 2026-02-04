@@ -1,4 +1,3 @@
-
 export interface FriendDto {
   id: number;
   image?: string;

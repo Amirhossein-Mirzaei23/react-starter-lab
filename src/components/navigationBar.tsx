@@ -76,12 +76,7 @@ function NavigationBar() {
             >
               <Icon icon={userGroupIcon} width="24" height="24" />
             </div>
-            <div
-
-              className="mx-auto  flex items-center justify-center !p-3 !bg-slate-800"
-            >
-              -
-            </div>
+            <div className="mx-auto  flex items-center justify-center !p-3 !bg-slate-800">-</div>
           </nav>
         </div>
       )}

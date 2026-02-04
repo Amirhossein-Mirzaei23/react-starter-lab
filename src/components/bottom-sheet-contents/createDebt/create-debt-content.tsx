@@ -27,7 +27,7 @@ import { useGroupDetail } from '../../../hooks/useGroupDetail';
 
 type props = {
   groupIdProps?: number;
-  creditorId:number
+  creditorId: number;
 };
 function dateToString(date: number) {
   return 'Mar 24, 2034';
@@ -42,7 +42,7 @@ export function CreateDebtContent({ groupIdProps, creditorId }: props) {
 
   const phoneRegex = /^09\d{9}$/;
   const { isOpen, setBottomSheet } = useBottomSheetStore();
-  const [createBillLoading,setCreateBillLoading] = useState<boolean>(false)
+  const [createBillLoading, setCreateBillLoading] = useState<boolean>(false);
   const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
 
   const { refetch } = useGroupDetail(groupIdProps || 0);
@@ -54,7 +54,7 @@ export function CreateDebtContent({ groupIdProps, creditorId }: props) {
     }
   }
   function createBillApi(groupId: number) {
-    setCreateBillLoading(true)
+    setCreateBillLoading(true);
     if (!debtAmount) {
       return;
     }
@@ -74,8 +74,9 @@ export function CreateDebtContent({ groupIdProps, creditorId }: props) {
       })
       .catch((error: any) => {
         console.error(error);
-      }).finally(()=>{
-        setCreateBillLoading(false)
+      })
+      .finally(() => {
+        setCreateBillLoading(false);
       });
   }
 
@@ -87,33 +88,31 @@ export function CreateDebtContent({ groupIdProps, creditorId }: props) {
     <>
       <Drawer.Body>
         <div className="grid grid-cols-1 items-center justify-center gap-4">
-    
-            <Field.Root required invalid={debtNameError.length > 0} className="">
-              <FloatingLabelInput
-                label="عنوان را وارد کنید"
-                size="md"
-                labelBgColor="#314158"
-                value={debtName}
-                onChange={(e) => setdebtName(e.currentTarget.value)}
-                minLength={1}
-                shadow={'none'}
-              />
-              {/* <Field.ErrorText className='absolute bottom-0 translate-y-5'  >{phoneError}</Field.ErrorText> */}
-            </Field.Root>
-            <Field.Root required invalid={debtNameError.length > 0} className="">
-              <FloatingLabelInput
-                label="مقدار را وارد کنید."
-                size="md"
-                type="number"
-                labelBgColor="#314158"
-                value={debtAmount}
-                onChange={(e) => setDebtAmount(e.currentTarget.value)}
-                minLength={1}
-                shadow={'none'}
-              />
-              {/* <Field.ErrorText className='absolute bottom-0 translate-y-5'  >{phoneError}</Field.ErrorText> */}
-            </Field.Root>
-        
+          <Field.Root required invalid={debtNameError.length > 0} className="">
+            <FloatingLabelInput
+              label="عنوان را وارد کنید"
+              size="md"
+              labelBgColor="#314158"
+              value={debtName}
+              onChange={(e) => setdebtName(e.currentTarget.value)}
+              minLength={1}
+              shadow={'none'}
+            />
+            {/* <Field.ErrorText className='absolute bottom-0 translate-y-5'  >{phoneError}</Field.ErrorText> */}
+          </Field.Root>
+          <Field.Root required invalid={debtNameError.length > 0} className="">
+            <FloatingLabelInput
+              label="مقدار را وارد کنید."
+              size="md"
+              type="number"
+              labelBgColor="#314158"
+              value={debtAmount}
+              onChange={(e) => setDebtAmount(e.currentTarget.value)}
+              minLength={1}
+              shadow={'none'}
+            />
+            {/* <Field.ErrorText className='absolute bottom-0 translate-y-5'  >{phoneError}</Field.ErrorText> */}
+          </Field.Root>
         </div>
       </Drawer.Body>
       <Drawer.Footer>
@@ -126,7 +125,7 @@ export function CreateDebtContent({ groupIdProps, creditorId }: props) {
             انصراف
           </Button>
           <Button
-          loading={createBillLoading}
+            loading={createBillLoading}
             colorScheme="blue"
             className="w-20 !text-[16px] !text-neutral-800 !font-medium !rounded-md"
             onClick={submit}

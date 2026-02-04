@@ -15,19 +15,19 @@ export default function FriendshipRequestList() {
   const [error, setError] = useState<string | null>(null);
 
   const userId = useUserStore().getUserInfo().id;
-      const fetchRequests = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await friendshipRequestsListApi(userId);
-        setListData(res);
-      } catch (err) {
-        console.error(err);
-        setError('Failed to load friendship requests');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchRequests = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await friendshipRequestsListApi(userId);
+      setListData(res);
+    } catch (err) {
+      console.error(err);
+      setError('Failed to load friendship requests');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchRequests();
@@ -38,8 +38,9 @@ export default function FriendshipRequestList() {
     };
     acceptFriendshipRequestApi(payload)
       .then((res) => {})
-      .catch(() => {}).finally(()=>{
-        fetchRequests()
+      .catch(() => {})
+      .finally(() => {
+        fetchRequests();
       });
   }
   function AcceptButton() {

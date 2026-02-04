@@ -137,7 +137,7 @@ export function Authentication() {
         password: password,
       };
       console.log(payload);
-      
+
       handleRegister(payload);
     } else {
       const payload = {
@@ -152,9 +152,8 @@ export function Authentication() {
     try {
       const { data } = await userLoginApi(payload);
       setAuthData(data.token, data.user);
-      askForPermission(data.user.id)
+      askForPermission(data.user.id);
       navigate('/');
-
     } catch (err) {
       console.log('Register failed:', err);
       console.log('Register failed:', err);

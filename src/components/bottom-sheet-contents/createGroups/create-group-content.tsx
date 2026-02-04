@@ -49,24 +49,22 @@ export function CreateGroupBottomSheetContent({
   const { isOpen, setBottomSheet } = useBottomSheetStore();
   const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
   const { refetch } = useUserGroupsList({ userId, page: 1, limit: 100 });
-    const { data, isLoading, error } = useFriendList(userId);
+  const { data, isLoading, error } = useFriendList(userId);
 
-React.useEffect(() => {
-  if (!data) return;
+  React.useEffect(() => {
+    if (!data) return;
 
-  console.log(data);
-  
-  let listData = data;
+    console.log(data);
 
-  if (joinedMembersArray?.length) {
-    const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
-    listData = data.data.filter(
-      (friend: any) => !joinedIds.has(friend.friendInfo.id)
-    );
-  }
+    let listData = data;
 
-  setFriendsData(listData);
-}, [data, joinedMembersArray]);
+    if (joinedMembersArray?.length) {
+      const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
+      listData = data.data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+    }
+
+    setFriendsData(listData);
+  }, [data, joinedMembersArray]);
 
   function checkNameValidation(val: string | undefined) {
     const phone = val;
@@ -108,13 +106,12 @@ React.useEffect(() => {
       });
   }
   function getFriendsList() {
-let listData = data
-        if (joinedMembersArray) {
-          const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
-           listData = data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
-      
-        }
-    setFriendsData(listData)
+    let listData = data;
+    if (joinedMembersArray) {
+      const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
+      listData = data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+    }
+    setFriendsData(listData);
   }
   const toggleSelect = (id: number) => {
     setFriendIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -130,7 +127,7 @@ let listData = data
       friendIds,
     };
     addFriendToGroupApi(Number(groupId), payload).then((res) => {
-        refetch();
+      refetch();
       setBottomSheet({ isOpen: false });
     });
   }

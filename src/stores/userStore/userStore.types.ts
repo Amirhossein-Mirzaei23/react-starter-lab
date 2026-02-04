@@ -1,12 +1,13 @@
 import { userDto } from '../../types';
 
-export type userInfoStore = {
-  userInfo: userDto;
+export interface UserInfoStore {
+  userInfo: userDto | null;
   token: string;
   setToken: (val: string) => void;
   setUserInfo: (userInfo: userDto) => void;
-  getUserInfo: () => userDto;
+  getUserInfo: () => userDto | null;
   getToken: () => string;
   clearUserInfo: () => void;
   clearToken: () => void;
-};
+  isAuthenticated: () => boolean;
+}

@@ -51,13 +51,13 @@ export default function GroupCard({
   customElement,
 }: props) {
   const openCreateGroupBottomSheet = (
-    event:any,
+    event: any,
     groupId: number | undefined,
     groupName: string | undefined,
     membersArray?: any[],
   ) => {
-    event?.stopPropagation()
-    event?.preventDefault()
+    event?.stopPropagation();
+    event?.preventDefault();
     setBottomSheet({
       isOpen: true,
       title: `افزودن عضو به ${groupName}`,
@@ -75,12 +75,13 @@ export default function GroupCard({
   const { isOpen, setBottomSheet } = useBottomSheetStore();
 
   return (
-    <Link to={`/group/${groupId}`} className="bg-slate-100 w-full !p-2 rounded-2xl grid grid-cols-1 gap-2" >
+    <Link
+      to={`/group/${groupId}`}
+      className="bg-slate-100 w-full !p-2 rounded-2xl grid grid-cols-1 gap-2"
+    >
       <div className="flex justify-between items-center">
         <div>{amount && <p className="!text-xl !font-bold text-slate-950">{amount}$</p>}</div>
-        <p>
-          
-        </p>
+        <p></p>
         <BillCardTitle
           title={title}
           image={image || ''}
@@ -96,7 +97,7 @@ export default function GroupCard({
           <AvatarGroup>
             <Avatar.Root key={9999} size="md">
               <Button
-                onClick={(e) => openCreateGroupBottomSheet(e,groupId, groupName, membersArray)}
+                onClick={(e) => openCreateGroupBottomSheet(e, groupId, groupName, membersArray)}
                 variant={'plain'}
               >
                 <Icon icon={addUserIcon} className="scale-200"></Icon>
@@ -112,7 +113,7 @@ export default function GroupCard({
         ) : (
           <div
             className="text-neutral-800 text-sm w-full flex items-center gap-1 opacity-60"
-            onClick={(e) => openCreateGroupBottomSheet(e,groupId, groupName)}
+            onClick={(e) => openCreateGroupBottomSheet(e, groupId, groupName)}
           >
             <span>
               <Icon icon={heartsBoldIcon} width={26} height={26} />

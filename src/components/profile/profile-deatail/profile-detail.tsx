@@ -18,7 +18,7 @@ export default function ProfileDetail() {
   const setBackground = useBackgroundStore((s) => s.setBackground);
 
   useEffect(() => {
-    setBackground('#0A0A0C'); 
+    setBackground('#0A0A0C');
     return () => {
       setBackground(null);
     };
@@ -43,7 +43,6 @@ export default function ProfileDetail() {
   useEffect(() => {
     getUserDataApi(userId)
       .then((res) => {
-        
         setUserData(res);
 
         // Prefill form

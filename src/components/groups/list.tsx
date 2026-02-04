@@ -14,9 +14,8 @@ import { UserGroupListPayload } from '../../api/groups/groups.types';
 import { CreateGroupBottomSheetContent } from '../bottom-sheet-contents/createGroups/create-group-content';
 import { useBottomSheetStore } from '../../stores/bottomSheetStore';
 import { useUserGroupsList } from '../../hooks/useGroupsList';
-import addIcon from "@iconify-icons/solar/add-circle-bold"
+import addIcon from '@iconify-icons/solar/add-circle-bold';
 import { Icon } from '@iconify/react';
-
 
 export default function GroupsList() {
   const userId = useUserStore().getUserInfo().id;
@@ -25,14 +24,13 @@ export default function GroupsList() {
   const { isOpen, setBottomSheet } = useBottomSheetStore();
 
   const openCreateGroupBottomSheet = () => {
-    event?.stopPropagation()
+    event?.stopPropagation();
     setBottomSheet({
       isOpen: true,
       title: `گروه خود را ایجاد کنید`,
       BottomSheetContent: <CreateGroupBottomSheetContent />,
     });
   };
-
 
   if (isLoading)
     return (
@@ -77,14 +75,12 @@ export default function GroupsList() {
         </div>
       )}
 
-            <div className="!fixed bottom-16 flex items-center justify-end !p-4 !w-full !px-6">
+      <div className="!fixed bottom-16 flex items-center justify-end !p-4 !w-full !px-6">
         <Button
           className="!fixed bottom-16 !w-[56px] !h-[56px] !p-1 !rounded-full !shadow-2xl !bg-gray-200 !border-2 !border-cyan-700"
           onClick={openCreateGroupBottomSheet}
         >
-
-            <Icon icon={addIcon} className='!w-[56px] !h-[56px] !text-cyan-700' />
-         
+          <Icon icon={addIcon} className="!w-[56px] !h-[56px] !text-cyan-700" />
         </Button>
       </div>
     </div>

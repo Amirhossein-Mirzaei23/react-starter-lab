@@ -1,7 +1,11 @@
 import { Button, Drawer, Progress, Spinner } from '@chakra-ui/react';
 import { useBottomSheetStore } from '../../../stores/bottomSheetStore';
 
-import { showSnackBarPayload, snackbarTypesEnum, useSnackBarStore } from '../../../stores/snackbarStore/snackBarStore';
+import {
+  showSnackBarPayload,
+  snackbarTypesEnum,
+  useSnackBarStore,
+} from '../../../stores/snackbarStore/snackBarStore';
 import BillCardTitle from '../../pendding-bills/bill-card-title';
 import { numberSeprator } from '../../../utils/numberSeprator';
 import { sendNotification } from '../../../api/notification/notification.service';
@@ -40,24 +44,24 @@ export function DebtDetailContent({ debtsData, group }: props) {
         group.name +
         ' به موقع پرداخت کنید تا دوستانتان خوشحال شوند.',
     };
-        setLoadingButtons((prev) => ({ ...prev, [debt.id]: true }));
+    setLoadingButtons((prev) => ({ ...prev, [debt.id]: true }));
     sendNotification(payload)
       .then((res) => {
         console.log(res);
         const snackBarPayload: showSnackBarPayload = {
-                  type: snackbarTypesEnum.success,
-                  description: 'نوتیفیکیشن با موفقیت ارسال شد',
-                };
-                showSnackbar(snackBarPayload);
-        closeBottomSheet()
+          type: snackbarTypesEnum.success,
+          description: 'نوتیفیکیشن با موفقیت ارسال شد',
+        };
+        showSnackbar(snackBarPayload);
+        closeBottomSheet();
       })
       .catch((err) => {
         console.error(err);
-        
-      }).finally(()=>{
+      })
+      .finally(() => {
         console.log('fan');
-        
-       setLoadingButtons((prev) => ({ ...prev, [debt.id]: false }));
+
+        setLoadingButtons((prev) => ({ ...prev, [debt.id]: false }));
       });
   }
 
@@ -84,36 +88,44 @@ export function DebtDetailContent({ debtsData, group }: props) {
               const paidPercent = (debt.paid / debt.amount) * 100;
 
               return (
-               <div className={remainingAmount == 0?  'opacity-25':  'opacity-100' } >
-                 <div className="grid grid-cols-6 items-center !w-full ">
-                  <div className="!h-full col-span-1 translate-x-px " style={{paddingTop:'2px',paddingBlock:'2px'}} >
-                    <Button disabled={remainingAmount == 0} onClick={() => pushNotification(debt)} loading={loadingButtons[debt.id]} className="!bg-slate-200  !border-1 !border-slate-400 !h-full flex !rounded-xl !opacity-100">
-                      {/* ارسال یادآوری */}
+                <div className={remainingAmount == 0 ? 'opacity-25' : 'opacity-100'}>
+                  <div className="grid grid-cols-6 items-center !w-full ">
+                    <div
+                      className="!h-full col-span-1 translate-x-px "
+                      style={{ paddingTop: '2px', paddingBlock: '2px' }}
+                    >
+                      <Button
+                        disabled={remainingAmount == 0}
+                        onClick={() => pushNotification(debt)}
+                        loading={loadingButtons[debt.id]}
+                        className="!bg-slate-200  !border-1 !border-slate-400 !h-full flex !rounded-xl !opacity-100"
+                      >
+                        {/* ارسال یادآوری */}
 
-                      <Icon icon={alramBold}></Icon>
-                    </Button>
-                  </div>
-                  <div
-                    
-                    className="col-span-5 flex flex-row-reverse items-center justify-between !w-full bg-slate-200 !p-3   !border-1 !border-slate-400  !rounded-xl relative"
-                  >
-                    <div className="flex flex-col items-center">
-                      <BillCardTitle
-                        title={debt.debtor.name}
-                        image={debt.debtor.image || ''}
-                      ></BillCardTitle>
+                        <Icon icon={alramBold}></Icon>
+                      </Button>
                     </div>
-                    <div className="flex gap-1 items-center text-slate-950">
-                     
-                      {remainingAmount ? (
-                        <p> <span>مانده:</span>{numberSeprator(remainingAmount)}</p>
-                      ) : (
-                        <p>پرداخت شده</p>
-                      )}
+                    <div className="col-span-5 flex flex-row-reverse items-center justify-between !w-full bg-slate-200 !p-3   !border-1 !border-slate-400  !rounded-xl relative">
+                      <div className="flex flex-col items-center">
+                        <BillCardTitle
+                          title={debt.debtor.name}
+                          image={debt.debtor.image || ''}
+                        ></BillCardTitle>
+                      </div>
+                      <div className="flex gap-1 items-center text-slate-950">
+                        {remainingAmount ? (
+                          <p>
+                            {' '}
+                            <span>مانده:</span>
+                            {numberSeprator(remainingAmount)}
+                          </p>
+                        ) : (
+                          <p>پرداخت شده</p>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-               </div>
               );
             })}
         </div>

@@ -6,10 +6,14 @@ import { userDto } from '../types';
 const useAuth = () => {
   const setToken = useUserStore((state) => state.setToken);
   const setUserInfo = useUserStore((state) => state.setUserInfo);
+  const clearToken = useUserStore((state) => state.clearToken);
+  const clearUserInfo = useUserStore((state) => state.clearUserInfo);
 
   const setAuthData = useCallback(
     async (token: string, user: userDto) => {
-      // Call the utility function to handle the setting of token/user
+      if (!token || !user) {
+        throw new Error('Invalid authentication data');
+      }
       // Set data into the store
       setToken(token);
       setUserInfo(user);
@@ -18,9 +22,9 @@ const useAuth = () => {
   );
 
   const removeAuthData = useCallback(() => {
-    setToken(null);
-    setUserInfo(null);
-  }, [setToken, setUserInfo]);
+    clearToken();
+    clearUserInfo();
+  }, [clearToken, clearUserInfo]);
 
   return { setAuthData, removeAuthData };
 };

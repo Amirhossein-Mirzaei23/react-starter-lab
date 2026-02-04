@@ -17,7 +17,7 @@ export default function BillCardTitle({ title, image, dateStr }: props) {
       </AvatarGroup>
       <div className="flex flex-col items-end  text-slate-800">
         <p className="!text-sm !font-medium leading-7">{title}</p>
-        {dateStr && <p className="!text-xs  !font-light leading-5">{dateStr}</p> }
+        {dateStr && <p className="!text-xs  !font-light leading-5">{dateStr}</p>}
       </div>
     </div>
   );
