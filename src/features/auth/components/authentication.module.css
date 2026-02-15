@@ -1,0 +1,50 @@
+.illustarionRight {
+  clip-path: ellipse(95% 44% at 5% 55%);
+  background-color: #b7d1f2;
+  width: 70%;
+  height: 40vh;
+  position: absolute;
+  top: 10px;
+  left: -50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeEnter 1s 0ms 1 alternate;
+}
+
+@keyframes fadeEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(100px);
+    transform: translateX(-200px);
+  }
+  100% {
+    opacity: 100;
+    transform: translateX(0);
+  }
+}
+
+.illustarionLeft {
+  clip-path: ellipse(85% 40% at 95% 58%);
+  width: 70%;
+  height: 50vh;
+  position: absolute;
+  top: 10px;
+  right: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeEnter2 1s 0ms 1 alternate;
+}
+
+@keyframes fadeEnter2 {
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+    transform: translateX(200px);
+  }
+  100% {
+    opacity: 100;
+    transform: translateX(0);
+  }
+}

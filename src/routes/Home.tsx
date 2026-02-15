@@ -1,0 +1,29 @@
+import FinancePreviewTable from '../components/finance-preview-table';
+import PenddingBillsContainer from '../features/bills/components/Pendding-bills-container';
+import FriendsListContainer from '../features/friends/components/friends-list-container';
+import { useHeaderStore, useNavigationStore } from '@/app/store';
+import React from 'react';
+export default function Home() {
+  const setTitle = useHeaderStore((state) => state.setTitle);
+  const toggleBackButton = useHeaderStore((s) => s.toggleBackButton);
+  const sethasBackground = useHeaderStore((s) => s.sethasBackground);
+  const setAvatar = useHeaderStore((s) => s.hasAvatar);
+  const showNavBar = useNavigationStore((s) => s.showNav);
+  const setStickyPostion = useHeaderStore((s) => s.setStickyPostion);
+  React.useEffect(() => {
+    setTitle('');
+    toggleBackButton(false);
+    sethasBackground(false);
+    setStickyPostion(false);
+    setAvatar(true);
+    showNavBar();
+  }, []);
+
+  return (
+    <div className="grid grid-cols-1 gap-8 !pb-6">
+      <FinancePreviewTable />
+      <PenddingBillsContainer />
+      <FriendsListContainer />
+    </div>
+  );
+}

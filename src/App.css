@@ -1,0 +1,18 @@
+@import 'tailwindcss';
+@import 'tailwindcss/utilities';
+
+@layer base {
+  :root {
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+  }
+}
