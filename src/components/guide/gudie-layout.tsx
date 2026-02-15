@@ -1,6 +1,4 @@
-import { Link } from 'react-router-dom';
 import React from 'react';
-import FriendsList from '../../components/friends-container/friends-list';
 export default function UserGuideLayout() {
   React.useEffect(() => {}, []);
 

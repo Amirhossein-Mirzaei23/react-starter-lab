@@ -1,22 +1,22 @@
 import { lazy, Suspense } from 'react';
 import { RouteObject } from 'react-router-dom';
-import MainLayout from '../layouts/MainLayout';
-import { PostList } from '../components/posts-list/posts-list';
-import BillsList from '../components/pendding-bills/bills-list';
-import FriendsList from '../components/friends-container/friends-list';
-import { Authentication } from '../components/authentication/authentication';
-import ProfilePage from '../pages/profile/landing/profile';
-import ProfileDetailPage from '../pages/profile/detail/detail';
-import ProfileLogOutPage from '../pages/profile/logout/logout';
-import FriendshipRequestsListPage from '../pages/friendShip/requests';
-import GroupsListPage from '../pages/groups/list';
+import MainLayout from '../components/layout/MainLayout';
+import { PostList } from '../features/posts/components/posts-list/posts-list';
+import BillsList from '../features/bills/components/bills-list';
+import FriendsList from '../features/friends/components/friends-list';
+import { Authentication } from '../features/auth/components/authentication';
+import ProfilePage from '../features/profile/profile/landing/profile';
+import ProfileDetailPage from '../features/profile/profile/detail/detail';
+import ProfileLogOutPage from '../features/profile/profile/logout/logout';
+import FriendshipRequestsListPage from '../features/friends/friendShip/requests';
+import GroupsListPage from '../features/groups/groups/list';
 import { Spinner } from '@chakra-ui/react';
 import ProtectedRoute from './ProtectedRoute';
-import GroupDetailPage from '../pages/groups/detail';
+import GroupDetailPage from '../features/groups/groups/detail';
 
-const Home = lazy(() => import('../pages/Home'));
+const Home = lazy(() => import('./Home'));
 
-const NotFound = lazy(() => import('../pages/NotFound'));
+const NotFound = lazy(() => import('./NotFound'));
 
 const routes: RouteObject[] = [
   {

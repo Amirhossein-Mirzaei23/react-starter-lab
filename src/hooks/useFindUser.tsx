@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { findUserApi } from '../api/friends/friends-services';
+import { findUserApi } from '../features/friends/api/friends-services';
 
 export function useFindUser(phone: string) {
   const query = useQuery({

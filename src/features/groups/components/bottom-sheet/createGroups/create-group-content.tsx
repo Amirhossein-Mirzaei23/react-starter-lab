@@ -1,0 +1,204 @@
+import { Button, Drawer, Field } from '@chakra-ui/react';
+import { useBottomSheetStore, useUserStore, useSnackBarStore, showSnackBarPayload, snackbarTypesEnum } from '@/app/store';
+import React, { useState } from 'react';
+import FloatingLabelInput from '@/components/ui/floating-label-input';
+import { userDto } from '@/types';
+import FriendCard from '../../../../friends/components/friendCard';
+import {
+  findUserApi,
+  friendsListApi,
+  sendFriendshipRequestApi,
+} from '../../../../friends/api/friends-services';
+import { FindUserPayload } from '../../../../friends/api/friends.types';
+import { addFriendToGroupApi, createGroupApi } from '../../../api/groups-services';
+import { CreateGroupDto } from '../../../api/groups.types';
+import { useUserGroupsList } from '../../../../../hooks/useGroupsList';
+import { useFriendList } from '../../../../../hooks/useFrinedList';
+
+interface props {
+  isFindUSerProps?: boolean;
+  groupIdProps?: number;
+  groupNameProps?: string;
+  joinedMembersArray?: any[];
+}
+function dateToString(date: number) {
+  return 'Mar 24, 2034';
+}
+
+export function CreateGroupBottomSheetContent({
+  groupIdProps,
+  isFindUSerProps,
+  groupNameProps,
+  joinedMembersArray,
+}: props) {
+  const [groupName, setGroupName] = useState<string>(groupNameProps || '');
+  const [groupId, setGroupId] = useState<number | undefined>(groupIdProps);
+  const [friendsData, setFriendsData] = useState<any[]>();
+  const [friendIds, setFriendIds] = useState<number[]>([]);
+  const [isFindUSer, seFindUSer] = useState<boolean>(isFindUSerProps || false);
+  const [groupNameError, setGroupNameError] = useState('');
+  const userId = useUserStore().getUserInfo().id;
+
+  const phoneRegex = /^09\d{9}$/;
+  const { isOpen, setBottomSheet } = useBottomSheetStore();
+  const showSnackbar = useSnackBarStore((s) => s.showSnackbar);
+  const { refetch } = useUserGroupsList({ userId, page: 1, limit: 100 });
+  const { data, isLoading, error } = useFriendList(userId);
+
+  React.useEffect(() => {
+    if (!data) return;
+
+    console.log(data);
+
+    let listData = data;
+
+    if (joinedMembersArray?.length) {
+      const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
+      listData = data.data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+    }
+
+    setFriendsData(listData);
+  }, [data, joinedMembersArray]);
+
+  function checkNameValidation(val: string | undefined) {
+    const phone = val;
+    let hasError = false;
+    setGroupNameError('');
+
+    if (!phone?.toString() || phone?.toString().length < 1) {
+      setGroupNameError('لطفا شماره همراه خود را وارد نمایید.');
+    } else if (!phoneRegex.test(phone)) {
+      setGroupNameError('شماره همراه وارد شده صحیح نیست.');
+      hasError = true;
+    }
+    return hasError;
+  }
+  async function submit() {
+    if (!isFindUSer) {
+      createGroup();
+    } else {
+      sendAddToGroupRequest(friendIds);
+    }
+  }
+  function createGroup() {
+    const payload: CreateGroupDto = {
+      name: groupName,
+      ownerId: userId,
+    };
+    createGroupApi(payload)
+      .then((res) => {
+        setGroupId(res.id);
+        setBottomSheet({ isOpen: false });
+        seFindUSer(true);
+
+        setTimeout(() => {
+          setBottomSheet({ isOpen: true, size: 'full', title: `اعضای ${groupName}` });
+        }, 20);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  function getFriendsList() {
+    let listData = data;
+    if (joinedMembersArray) {
+      const joinedIds = new Set(joinedMembersArray.map((f) => f.id));
+      listData = data.filter((friend: any) => !joinedIds.has(friend.friendInfo.id));
+    }
+    setFriendsData(listData);
+  }
+  const toggleSelect = (id: number) => {
+    setFriendIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
+    console.log(friendIds);
+  };
+
+  function closeBottomSheet() {
+    setBottomSheet({ isOpen: false });
+  }
+  function sendAddToGroupRequest(friendIds: number[]) {
+    const payload = {
+      ownerId: Number(userId),
+      friendIds,
+    };
+    addFriendToGroupApi(Number(groupId), payload).then((res) => {
+      refetch();
+      setBottomSheet({ isOpen: false });
+    });
+  }
+  return (
+    <>
+      <Drawer.Body>
+        {!isFindUSer && (
+          <div className="grid grid-cols-1 items-center justify-center gap-4">
+            <div>
+              <Field.Root required invalid={groupNameError.length > 0} className="">
+                <FloatingLabelInput
+                  label="نام گروه را وارد کنید"
+                  size="md"
+                  labelBgColor="#314158"
+                  value={groupName}
+                  onChange={(e) => setGroupName(e.currentTarget.value)}
+                  minLength={1}
+                  shadow={'none'}
+                />
+                {/* <Field.ErrorText className='absolute bottom-0 translate-y-5'  >{phoneError}</Field.ErrorText> */}
+              </Field.Root>
+            </div>
+          </div>
+        )}
+        {isFindUSer && (
+          <>
+            {friendsData && friendsData.length > 0 ? (
+              <div className="!mt-4 grid grid-cols-1 gap-3">
+                {friendsData.map((friend) => {
+                  const id = friend.friendInfo.id;
+                  const isSelected = friendIds.includes(id);
+
+                  return (
+                    <div
+                      key={id}
+                      onClick={() => toggleSelect(id)}
+                      className={`cursor-pointer transition-all ${
+                        isSelected ? 'opacity-65' : 'opacity-100'
+                      }`}
+                    >
+                      <FriendCard
+                        title={friend.friendInfo.name}
+                        subtitle={friend.friendInfo.phone}
+                        image={friend.friendInfo.image}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div>
+                <p className="!text-[16px] !font-medium leading-7">
+                  تمام دوستان شما در این گروه عضو شده اند.
+                </p>
+              </div>
+            )}
+          </>
+        )}
+      </Drawer.Body>
+      <Drawer.Footer>
+        <div className="flex items-center gap-1">
+          <Button
+            variant="plain"
+            className="w-20 !text-[16px] !text-neutral-100 !font-medium"
+            onClick={closeBottomSheet}
+          >
+            انصراف
+          </Button>
+          <Button
+            colorScheme="blue"
+            className="w-20 !text-[16px] !text-neutral-800 !font-medium !rounded-md"
+            onClick={submit}
+          >
+            تایید
+          </Button>
+        </div>
+      </Drawer.Footer>
+    </>
+  );
+}

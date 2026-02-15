@@ -1,5 +1,5 @@
 // useAuth.ts (Custom Hook)
-import { useUserStore } from '../stores/userStore/userStore';
+import { useUserStore } from '../store/slices/userStore/userStore';
 import { useCallback } from 'react';
 import { userDto } from '../types';
 
