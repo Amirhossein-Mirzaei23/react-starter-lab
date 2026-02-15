@@ -8,7 +8,7 @@ import App from './App';
 import { Provider } from './components/ui/provider';
 import { Toaster } from './components/ui/toaster';
 import { queryClient } from './queryClient';
-import { useUserStore } from './stores/userStore/userStore';
+import { useUserStore } from './store/slices/userStore/userStore';
 import { askForPermission } from './utils/askForPermision';
 
 // Service Worker Registration

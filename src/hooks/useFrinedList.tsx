@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
-import { getUserGroupsApi } from '../api/groups/groups-services';
-import { UserGroupListPayload } from '../api/groups/groups.types';
-import { friendsListApi } from '../api/friends/friends-services';
+import { getUserGroupsApi } from '../features/groups/api/groups-services';
+import { UserGroupListPayload } from '../features/groups/api/groups.types';
+import { friendsListApi } from '../features/friends/api/friends-services';
 
 export function useFriendList(userId: number) {
   const query = useQuery({

@@ -11,7 +11,7 @@ import {
   ConditionalValue,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
-import { useBottomSheetStore } from '../../stores/bottomSheetStore';
+import { useBottomSheetStore } from '../../store/slices/bottomSheetStore';
 
 interface BottomSheetProps {
   triggerButtonText?: string;

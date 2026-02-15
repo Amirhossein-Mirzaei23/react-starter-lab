@@ -1,4 +1,4 @@
-export function numberSeprator(value: number | string, locale: string = 'en-US'): string {
+export function numberSeprator(value: number | string, locale = 'en-US'): string {
   if (value === null || value === undefined || value === '') return '';
 
   const num = typeof value === 'string' ? Number(value) : value;
